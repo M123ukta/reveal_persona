@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reveal Your Persona</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding-top: 80px;
+    }
+    input, button {
+      padding: 12px;
+      font-size: 16px;
+      margin: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      background: #38bdf8;
+      cursor: pointer;
+    }
+    .card {
+      margin-top: 30px;
+      padding: 20px;
+      background: #1e293b;
+      border-radius: 10px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🎭 Reveal Your Persona</h1>
+  <p>Enter your team number and tap reveal</p>
+
+  <input type="number" id="team" placeholder="Team Number" />
+  <br>
+  <button onclick="revealPersona()">Reveal Persona</button>
+
+  <div id="result"></div>
+
+  <script>
+    const personas = [
+      "Innovator",
+      "Analyst",
+      "Communicator",
+      "Executor"
+    ];
+
+    function revealPersona() {
+      const team = document.getElementById("team").value;
+      if (!team) {
+        alert("Please enter your team number");
+        return;
+      }
+
+      // Lock persona using team number
+      const index = team % personas.length;
+      const persona = personas[index];
+
+      // Save so refresh doesn't change it
+      localStorage.setItem("persona_" + team, persona);
+
+      document.getElementById("result").innerHTML = `
+        <div class="card">
+          <h2>Your Persona</h2>
+          <h1>${persona}</h1>
+          <p>Screenshot this and proceed</p>
+        </div>
+      `;
+    }
+
+    // If already revealed, show again
+    const teamInput = document.getElementById("team");
+    teamInput.addEventListener("blur", () => {
+      const team = teamInput.value;
+      const saved = localStorage.getItem("persona_" + team);
+      if (saved) {
+        document.getElementById("result").innerHTML = `
+          <div class="card">
+            <h2>Your Persona</h2>
+            <h1>${saved}</h1>
+          </div>
+        `;
+      }
+    });
+  </script>
+
+</body>
+</html>
